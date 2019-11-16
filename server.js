@@ -1,7 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const router = require('./routes');
-
+const path = require("path")
 const cors = require('cors');
 const morgan = require('morgan');
 const fileUpload = require('express-fileupload');
@@ -17,6 +17,13 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/react-gob
 const app = express();
 
 const port = process.env.PORT || 8081;
+
+// ... other app.use middleware
+app.use(express.static(path.join(__dirname, "client", "build")))
+
+app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+});
 
 app.use(morgan('combined'));
 app.use(fileUpload({
