@@ -1,6 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const router = require('./router');
+const router = require('./routes');
 
 const cors = require('cors');
 const morgan = require('morgan');
@@ -8,7 +8,7 @@ const fileUpload = require('express-fileupload');
 
 
 //Connexion à la base de donnée
-mongoose.connect('mongodb://localhost:27017/react-gobelins', { useNewUrlParser: true }).then(() => {
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/react-gobelins', { useNewUrlParser: true }).then(() => {
     console.log('Connected to mongoDB')
 }).catch(e => {
     console.log('Error while DB connecting');
@@ -16,7 +16,7 @@ mongoose.connect('mongodb://localhost:27017/react-gobelins', { useNewUrlParser: 
 });
 const app = express();
 
-const port = 8081;
+const port = process.env.PORT || 8081;
 
 app.use(morgan('combined'));
 app.use(fileUpload({

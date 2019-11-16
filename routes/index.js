@@ -2,7 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const router = express.Router();
 
-let Users = require('./db/schemaUsers');
+let Users = require('../models/schemaUsers');
 
 router
     .use(express.static('resources'))
