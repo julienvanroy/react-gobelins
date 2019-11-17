@@ -1,31 +1,42 @@
 {
   "name": "react-gobelins",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "react": "^16.12.0",
-    "react-dom": "^16.12.0",
-    "react-scripts": "3.2.0"
-  },
+  "version": "1.0.0",
+  "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
+  "main": "commitlint.config.js",
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "resetDB": "mongo react-gobelins ./models/data.js",
+    "server": "nodemon server.js",
+    "start": "node server.js",
+    "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build"
   },
-  "eslintConfig": {
-    "extends": "react-app"
+  "devDependencies": {
+    "@commitlint/cli": "^8.2.0",
+    "@commitlint/config-conventional": "^8.2.0",
+    "eslint": "^6.6.0",
+    "husky": "^3.0.9",
+    "nodemon": "^1.19.4"
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JujuOneLove/react-gobelins.git"
+  },
+  "author": "Julien Vanroy",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JujuOneLove/react-gobelins/issues"
+  },
+  "homepage": "https://github.com/JujuOneLove/react-gobelins#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "express-fileupload": "^1.1.6-alpha.6",
+    "mongoose": "^5.7.11",
+    "morgan": "^1.9.1",
+    "path": "^0.12.7"
   }
 }
