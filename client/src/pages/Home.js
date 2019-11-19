@@ -34,7 +34,7 @@ export default class Home extends React.Component {
             <th className="text-left">Rank</th>
             <th className="text-center">Name</th>
             <th className="text-center">Symbol</th>
-            <th className="text-center">Type</th>
+            <th className="text-right">Type</th>
         </tr>
     </thead>
     <tbody>

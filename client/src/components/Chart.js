@@ -22,7 +22,7 @@ export default class Chart extends React.Component {
         console.log(this.state.date)
     }
 
-    
+      
 
     render() {
         const data = (canvas) => {
