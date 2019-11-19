@@ -3,10 +3,10 @@ import axios from 'axios';
 import {Button,Table} from 'reactstrap';
 import TableBody from '../components/TableBody'
 
-class Home extends React.Component {
+export default class Home extends React.Component {
     constructor (props) {
         super(props);
-        this.state = { 
+        this.state = {
             coins : []
          }
     }
@@ -20,14 +20,14 @@ class Home extends React.Component {
         }).finally( () => {
             console.log(this.state.coins);
             this.setState({coins: this.state.coins.filter(coin => coin.is_active === true)})
-        })    
+        })
     }
 
 
     render() {
         const tableau = this.state.coins.map((coins, index) => <TableBody key={index} {...coins} /> )
         return (
-            
+
 <Table responsive>
     <thead>
         <tr>
@@ -38,7 +38,7 @@ class Home extends React.Component {
         </tr>
     </thead>
     <tbody>
-    
+
         {tableau}
     </tbody>
 </Table>
