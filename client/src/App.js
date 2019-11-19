@@ -5,20 +5,22 @@ import Home from "./pages/Home";
 import Error from "./pages/Error";
 import Login from "./pages/Login";
 import Account from "./pages/Account";
-
+import Sidebar from "./components/Sidebar";
+import NavBar from "./components/NavBar";
+import Footer from "./components/Footer";
 const App = () => {
   return (
       <BrowserRouter>
-        <div>
-          <header className="header">
-          </header>
-          <main role="main">
-            <Route render={({location}) => (
+          <Sidebar />
+          <div className="main-panel" data="blue">
+            <NavBar />
+            <main role="main" className="content">
+              <Route render={({location}) => (
                 <TransitionGroup>
                   <CSSTransition
-                      key={location.key}
-                      timeout={450}
-                      classNames="fade"
+                    key={location.key}
+                    timeout={450}
+                    classNames="fade"
                   >
                     <Switch location={location}>
                       <Route exact={true} path='/' component={Home}/>
@@ -28,11 +30,10 @@ const App = () => {
                     </Switch>
                   </CSSTransition>
                 </TransitionGroup>
-            )}/>
-          </main>
-          <footer className="footer">
-          </footer>
-        </div>
+              )}/>
+            </main>
+            <Footer />
+          </div>
       </BrowserRouter>
   );
 };
