@@ -12,27 +12,30 @@ router
     extended: true
   }))
   .get("/users", (req, res) => {
-    Users.find({}, function (err, quizzes) {
+    Users.find({}, function (err, users) {
       if (err) {
         res.status(400);
         res.json({
           error: "Bad request"
         });
       } else {
-        res.json(quizzes);
+        users.forEach(user => {delete user.password});
+        console.log(users)
+        res.json(users);
         res.status(200);
       }
     });
   })
   .get("/users/:id", (req, res) => {
-    Users.findById(req.params.id, function (err, quizzes) {
+    Users.findById(req.params.id, function (err, user) {
       if (err) {
         res.status(400);
         res.json({
           error: "Bad request"
         });
       } else {
-        res.json(quizzes);
+        delete user.password;
+        res.json(user);
         res.status(200);
       }
     });
@@ -47,7 +50,6 @@ router
           else {
             if (data) {
               res.json({isConnected: true});
-              console.log('cc')
             }
             else res.json({isConnected: false})
 

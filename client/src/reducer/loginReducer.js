@@ -1,5 +1,5 @@
 export const initialState = {
-    result: 0,
+    userConnect: null,
     number1: 0,
     number2: 0,
     hasError: false,
