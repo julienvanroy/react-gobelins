@@ -1,30 +1,47 @@
 import React from 'react';
-import { format } from 'path';
+import axios from 'axios';
+import {Button,Table} from 'reactstrap';
+import TableBody from '../components/TableBody'
 
-class UserForm extends React.Component {
-    constructor (props){
+class Home extends React.Component {
+    constructor (props) {
         super(props);
-        this.state = {value: ''}
+        this.state = { 
+            coins : []
+         }
     }
 
+    componentDidMount () {
+        axios.get('https://api.coinpaprika.com/v1/coins')
+        .then(res => {
+            const coins = res.data;
+            this.setState({coins})
+            console.log();
+        }).finally( () => {
+            console.log(this.state.coins);
+            this.setState({coins: this.state.coins.filter(coin => coin.is_active === true)})
+        })    
+    }
 
 
     render() {
-        return(
-            <form> 
-            <div class="form-group">
-                <label for="exampleUsername">Username</label>
-                <input type="username" class="form-control" id="exampleUsername" aria-describedby="usernameHelp" placeholder="Enter username"></input>
-            </div>
-            <div class="form-group">
-                <label for="exampleInputPassword">Password</label>
-                <input type="password" class="form-control" id="exampleInputPassword" placeholder="Password"></input>
-            </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
-        )
-    }
-
+        const tableau = this.state.coins.map((coins, index) => <TableBody key={index} {...coins} /> )
+        return (
+            
+<Table responsive>
+    <thead>
+        <tr>
+            <th className="text-left">Rank</th>
+            <th className="text-center">Name</th>
+            <th className="text-center">Symbol</th>
+            <th className="text-center">Type</th>
+        </tr>
+    </thead>
+    <tbody>
+    
+        {tableau}
+    </tbody>
+</Table>
+        );
+    };
 }
-
-export default UserForm;
