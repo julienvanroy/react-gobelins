@@ -8,6 +8,7 @@ import Account from "./pages/Account";
 import Sidebar from "./components/Sidebar";
 import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
+import SinglePage from "./pages/SinglePage";
 const App = () => {
   return (
       <BrowserRouter>
@@ -26,6 +27,7 @@ const App = () => {
                       <Route exact={true} path='/' component={Home}/>
                       <Route exact={true} path='/login' component={Login}/>
                       <Route exact={true} path='/account' component={Account}/>
+                      <Route exact={true} path="/:id" component={SinglePage}/>
                       <Route path="*" component={Error}/>
                     </Switch>
                   </CSSTransition>
