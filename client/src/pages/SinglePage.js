@@ -2,6 +2,7 @@ import React from 'react';
 import Chart from '../components/Chart'
 import CardInfo from '../components/CardInfo'
 import Team from '../components/Team'
+import Button from '../components/Buttons'
 import axios from 'axios';
 import { DocumentQuery } from 'mongoose';
 
@@ -16,12 +17,40 @@ export default class SinglePage extends React.Component {
             loading: false,
             loadingHistorique: false,
             id: this.props.match.params.id,
-            date: `${new Date().getFullYear()}-${new Date().getMonth()}-${parseInt(new Date().getDate(), 10) - 1}`
+            date: `${new Date().getFullYear()}-${new Date().getMonth()}-${parseInt(new Date().getDate(), 10) - 4}`,
+            toggleHeure: '1',
+            'options': "1"
+            //chartDate: `${parseInt(new Date().getDate(), 10) - 1}${new Date().getMonth()}${new Date().getFullYear()}}`
          }
     }
 
+    handleChange = (event) => {
+        console.log(event.target.value)
+        const value =(parseInt( new Date().getDate(), 10) - parseInt(event.target.value,10))
+        const day = value < 10 ? `0${new Date().getDate()}` : new Date().getDate();
+
+        this.setState({
+            loading: false,
+            date: `${new Date().getFullYear()}-${new Date().getMonth()}-${day}`,
+            options: event.target.value,
+        },() => {
+            console.log(this.state.date)
+            console.log(this.state.options)
+        this.changeApi() })
+    }
+    
+    async changeApi () {
+        await axios.get(`https://api.coinpaprika.com/v1/tickers/${this.state.id}/historical?start=${this.state.date}&interval=${this.state.options}d`)
+        .then(res => {           
+           this.setState({chartData: res.data})
+        }).finally(() => {
+            console.log('cc')
+            this.setState({loading: true})
+        })
+    }
+
     async componentDidMount () {
-        await axios.get(`https://api.coinpaprika.com/v1/tickers/${this.state.id}/historical?start=${this.state.date}&interval=24h`)
+        await axios.get(`https://api.coinpaprika.com/v1/tickers/${this.state.id}/historical?start=2019-11-06&interval=7d`)
         .then(res => {           
            this.setState({chartData: res.data})
         }).finally(() => {
@@ -36,17 +65,11 @@ export default class SinglePage extends React.Component {
         })
     }
 
-
-    handleClick1 = () => {
-        console.log('hey')
-
-    }  
-
     render() {
        
         if( this.state.loading === true && this.state.loadingHistorique === true ){
             const team = this.state.historique.team.map((team, index) =>  <Team  key={index} {...team}  />)
-            console.log(team)
+           // console.log(this.state.chartData)
             return(
             <div>
                 <div className="row">
@@ -60,41 +83,21 @@ export default class SinglePage extends React.Component {
                                     </div>
                                     <div className="col-sm-6">
                                         <div data-toggle="buttons" role="group" className="btn-group-toggle float-right btn-group">
-                                            <label id="0" className="btn-simple active btn btn-info btn-sm">
-                                            <input className="d-none" name="options" type="radio" />
-                                                <span className="d-none d-sm-block d-md-block d-lg-block d-xl-block">24h</span>
-                                                <span className="d-block d-sm-none">
-                                                    <i className="tim-icons icon-single-02"></i>
-                                                </span>
-                                            </label>
-                                            <label id="1" className="btn-simple btn btn-info btn-sm" onClick={this.handleClick1}>
-                                            <input className="d-none" name="options" type="radio" />
-                                                <span className="d-none d-sm-block d-md-block d-lg-block d-xl-block">1j</span>
-                                                <span className="d-block d-sm-none">
-                                                    <i className="tim-icons icon-gift-2"></i>
-                                                </span>
-                                            </label>
-                                                <label id="2" className="btn-simple btn btn-info btn-sm">
-                                                    <input className="d-none" name="options" type="radio" />
-                                                    <span className="d-none d-sm-block d-md-block d-lg-block d-xl-block">4j</span>
-                                                    <span className="d-block d-sm-none">
-                                                        <i className="tim-icons icon-tap-02"></i>
-                                                    </span>
-                                                </label>
+                                            <Button options={this.state.options} handleChange={this.handleChange}/>
                                         </div>
                                     </div>
+                                </div>
                             </div>
-                        </div>
-                            <div className="card-body">
-                                <Chart chartData={this.state.chartData} />
-                            </div>
+                        <div className="card-body">
+                            <Chart chartData={this.state.chartData} />
                         </div>
                     </div>
                 </div>
-                    <CardInfo  description={this.state.historique.description} />
-                    <div className="card_description">
-                        {team}
-                    </div>
+            </div>
+                <CardInfo  description={this.state.historique.description} />
+                <div className="card_description">
+                    {team}
+                </div>
         </div>    
        
             )

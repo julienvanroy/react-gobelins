@@ -38,7 +38,7 @@ export default class Chart extends React.Component {
             return {
                 labels: this.state.date,
                 datasets: [{
-                    label: "Active Users",
+                    label: "Price",
                     borderColor: "#f96332",
                     pointBorderColor: "#FFF",
                     pointBackgroundColor: "#f96332",
