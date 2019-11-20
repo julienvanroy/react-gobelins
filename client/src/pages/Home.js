@@ -18,7 +18,6 @@ export default class Home extends React.Component {
             this.setState({coins})
             console.log();
         }).finally( () => {
-            console.log(this.state.coins);
             this.setState({coins: this.state.coins.filter(coin => coin.is_active === true)})
         })
     }
@@ -38,7 +37,6 @@ export default class Home extends React.Component {
         </tr>
     </thead>
     <tbody>
-
         {tableau}
     </tbody>
 </Table>

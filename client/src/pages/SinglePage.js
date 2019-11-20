@@ -1,5 +1,7 @@
 import React from 'react';
 import Chart from '../components/Chart'
+import CardInfo from '../components/CardInfo'
+import Team from '../components/Team'
 import axios from 'axios';
 import { DocumentQuery } from 'mongoose';
 
@@ -19,8 +21,7 @@ export default class SinglePage extends React.Component {
     }
 
     async componentDidMount () {
-        console.log(this.state.date)
-        await axios.get(`https://api.coinpaprika.com/v1/tickers/${this.state.id}/historical?start=${this.state.date}&interval=1d`)
+        await axios.get(`https://api.coinpaprika.com/v1/tickers/${this.state.id}/historical?start=${this.state.date}&interval=24h`)
         .then(res => {           
            this.setState({chartData: res.data})
         }).finally(() => {
@@ -41,8 +42,11 @@ export default class SinglePage extends React.Component {
 
     }  
 
-    render() {      
-        if( this.state.loading === true ){
+    render() {
+       
+        if( this.state.loading === true && this.state.loadingHistorique === true ){
+            const team = this.state.historique.team.map((team, index) =>  <Team  key={index} {...team}  />)
+            console.log(team)
             return(
             <div>
                 <div className="row">
@@ -87,35 +91,10 @@ export default class SinglePage extends React.Component {
                         </div>
                     </div>
                 </div>
-           
-
-
-                <div className="col-lg-4">
-                    <div className="card-chart card">
-                        <div className="card-header">
-                            <h5 className="card-category">Daily Sales</h5>
-                            <h3 className="card-title">
-                                <i className="tim-icons icon-delivery-fast text-primary"></i> 3,500€
-                            </h3>
-                        </div>
-                        <div className="card-body">
-                            <div className="chart-area">
-                                <div className="chartjs-size-monitor" >
-                                    <div className="chartjs-size-monitor-expand">
-                                        <div>
-                                    </div>
-                                </div>
-                                <div className="chartjs-size-monitor-shrink">
-                                    <div>
-                                    </div>
-                                </div>
-                            </div>
-                            <canvas height="275" width="363" className="chartjs-render-monitor">
-                            </canvas>
-                        </div>
+                    <CardInfo  description={this.state.historique.description} />
+                    <div className="card_description">
+                        {team}
                     </div>
-                </div>
-            </div>
         </div>    
        
             )
