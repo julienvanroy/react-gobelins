@@ -11,8 +11,8 @@ export default class Home extends React.Component {
          }
     }
 
-    componentDidMount () {
-        axios.get('https://api.coinpaprika.com/v1/coins')
+    async componentDidMount () {
+        await axios.get('https://api.coinpaprika.com/v1/coins')
         .then(res => {
             const coins = res.data;
             this.setState({coins})

@@ -14,19 +14,20 @@ export default class SinglePage extends React.Component {
             loading: false,
             loadingHistorique: false,
             id: this.props.match.params.id,
-            style: false
+            date: `${new Date().getFullYear()}-${new Date().getMonth()}-${parseInt(new Date().getDate(), 10) - 1}`
          }
     }
 
-    componentDidMount () {
-        axios.get(`https://api.coinpaprika.com/v1/tickers/${this.state.id}/historical?start=2019-10-19&interval=24h`)
+    async componentDidMount () {
+        console.log(this.state.date)
+        await axios.get(`https://api.coinpaprika.com/v1/tickers/${this.state.id}/historical?start=${this.state.date}&interval=1d`)
         .then(res => {           
            this.setState({chartData: res.data})
         }).finally(() => {
             this.setState({loading: true})
         })
 
-        axios.get(`https://api.coinpaprika.com/v1/coins/${this.state.id}`)
+        await axios.get(`https://api.coinpaprika.com/v1/coins/${this.state.id}`)
         .then(res => {           
            this.setState({historique: res.data})
         }).finally(() => {
