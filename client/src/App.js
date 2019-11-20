@@ -4,7 +4,7 @@ import {CSSTransition, TransitionGroup} from 'react-transition-group';
 import Home from "./pages/Home";
 import Error from "./pages/Error";
 import Login from "./pages/Login";
-import Account from "./pages/Account";
+import Admin from "./pages/Admin";
 import Sidebar from "./components/Sidebar";
 import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
@@ -26,7 +26,7 @@ const App = () => {
                     <Switch location={location}>
                       <Route exact={true} path='/' component={Home}/>
                       <Route exact={true} path='/login' component={Login}/>
-                      <Route exact={true} path='/account' component={Account}/>
+                      <Route exact={true} path='/admin' component={Admin}/>
                       <Route exact={true} path="/:id" component={SinglePage}/>
                       <Route path="*" component={Error}/>
                     </Switch>
