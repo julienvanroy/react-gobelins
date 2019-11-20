@@ -81,9 +81,8 @@ router
         .exec((err, data) => {
           if (err) console.log("error", err);
           else {
-            console.log(req.body)
             if (data) {
-              res.json({isConnected: true});
+              res.json({isConnected: true, isAdmin: data.admin});
             }
             else res.json({isConnected: false})
           }

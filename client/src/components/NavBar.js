@@ -1,5 +1,9 @@
 import React from 'react';
+import {Redirect, Link} from 'react-router-dom';
 import {useState, useEffect} from 'react'
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import {logout} from "../actions/login";
 
 import {
   Collapse, DropdownItem, DropdownMenu, DropdownToggle, Nav,
@@ -8,21 +12,24 @@ import {
   UncontrolledDropdown
 } from "reactstrap";
 
-const NavBar = () => {
+const NavBar = ({value, actions}) => {
   const [open, setOpen] = useState(false);
   const [toggle, setToggle] = useState(false);
+  const [redirection, setRedirection] = useState(false);
 
   useEffect(
     () => {
-      if(open === true) {
-        document.getElementsByTagName( 'html' )[0].classList.add("nav-open");
+      if (open === true) {
+        document.getElementsByTagName('html')[0].classList.add("nav-open");
       } else {
-        document.getElementsByTagName( 'html' )[0].classList.remove("nav-open");
+        document.getElementsByTagName('html')[0].classList.remove("nav-open");
       }
     },
     [open],
   );
+
   return (
+    <>
       <Navbar
         className={`navbar navbar-absolute ${toggle === true ? "bg-white" : "navbar-transparent"}`}
         expand="lg"
@@ -53,11 +60,11 @@ const NavBar = () => {
             type="button"
             onClick={() => setToggle(!toggle)}
           >
-            <span className="navbar-toggler-bar navbar-kebab" />
-            <span className="navbar-toggler-bar navbar-kebab" />
-            <span className="navbar-toggler-bar navbar-kebab" />
+            <span className="navbar-toggler-bar navbar-kebab"/>
+            <span className="navbar-toggler-bar navbar-kebab"/>
+            <span className="navbar-toggler-bar navbar-kebab"/>
           </button>
-          <Collapse navbar isOpen={toggle}>
+          {value.authenticated === true ? <Collapse navbar isOpen={toggle}>
             <Nav className="ml-auto" navbar>
               <UncontrolledDropdown nav>
                 <DropdownToggle
@@ -82,16 +89,31 @@ const NavBar = () => {
                   </NavLink>
                   <DropdownItem divider tag="li"/>
                   <NavLink tag="li">
-                    <DropdownItem className="nav-item">Log out</DropdownItem>
+                    <DropdownItem className="nav-item"
+                                  onClick={() => actions()}>Log
+                      out</DropdownItem>
                   </NavLink>
                 </DropdownMenu>
               </UncontrolledDropdown>
               <li className="separator d-lg-none"/>
             </Nav>
-          </Collapse>
+          </Collapse> : <div><Link to="/login">Login</Link></div>}
         </div>
       </Navbar>
+    </>
   );
 };
 
-export default NavBar;
+
+const mapStateToProps = state => ({
+  value: state.login
+});
+
+const mapDispatchToProps = dispatch => ({
+  actions: bindActionCreators(logout, dispatch),
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(NavBar);
