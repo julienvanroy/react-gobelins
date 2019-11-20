@@ -11,14 +11,13 @@ export default class Home extends React.Component {
          }
     }
 
-    componentDidMount () {
-        axios.get('https://api.coinpaprika.com/v1/coins')
+    async componentDidMount () {
+        await axios.get('https://api.coinpaprika.com/v1/coins')
         .then(res => {
             const coins = res.data;
             this.setState({coins})
             console.log();
         }).finally( () => {
-            console.log(this.state.coins);
             this.setState({coins: this.state.coins.filter(coin => coin.is_active === true)})
         })
     }
@@ -38,7 +37,6 @@ export default class Home extends React.Component {
         </tr>
     </thead>
     <tbody>
-
         {tableau}
     </tbody>
 </Table>

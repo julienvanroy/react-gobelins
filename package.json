@@ -6,14 +6,18 @@
   "scripts": {
     "resetDB": "mongo react-gobelins ./models/data.js",
     "server": "nodemon server.js",
+    "test": "./node_modules/.bin/mocha",
     "start": "node server.js",
     "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build"
   },
   "devDependencies": {
     "@commitlint/cli": "^8.2.0",
     "@commitlint/config-conventional": "^8.2.0",
+    "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
     "eslint": "^6.6.0",
     "husky": "^3.0.9",
+    "mocha": "^6.2.2",
     "nodemon": "^1.19.4"
   },
   "husky": {

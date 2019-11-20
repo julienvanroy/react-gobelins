@@ -1,9 +1,9 @@
 let mongoose = require('mongoose');
 
 let usersSchema = new mongoose.Schema({
-    name: String,
+    username: String,
     password: String,
-    roles: [String],
+    admin: Boolean,
     favorites: [{}],
 }, { versionKey: false });
 

@@ -11,7 +11,37 @@ router
   .use(bodyParser.urlencoded({
     extended: true
   }))
-  .get("/users", (req, res) => {
+  .all("/auth/*", (req, res, next) => {
+    if (!req.headers || !req.headers.username || !req.headers.password) {
+      res.json({isConnected: false});
+      return;
+    }
+    Users.findOne({username: req.headers.username, password: md5(req.headers.password)})
+      .exec((err, data) => {
+        if (err) console.log("error", err);
+        else {
+          if (data) {
+            next();
+          } else res.json({isConnected: false})
+        }
+      })
+  })
+  .all("/admin/*", (req, res, next) => {
+    if (!req.headers || !req.headers.username || !req.headers.password || !req.headers.admin) {
+      res.json({isConnected: false});
+      return;
+    }
+    Users.findOne({username: req.headers.username, password: md5(req.headers.password), admin: req.headers.admin})
+      .exec((err, data) => {
+        if (err) console.log("error", err);
+        else {
+          if (data) {
+            next();
+          } else res.json({isConnected: false})
+        }
+      })
+  })
+  .get("/admin/users", (req, res) => {
     Users.find({}, function (err, users) {
       if (err) {
         res.status(400);
@@ -19,14 +49,16 @@ router
           error: "Bad request"
         });
       } else {
-        users.forEach(user => {delete user.password});
-        console.log(users)
+        users = users.map(user => {
+          user.password = undefined
+          return user;
+        });
         res.json(users);
         res.status(200);
       }
     });
   })
-  .get("/users/:id", (req, res) => {
+  .get("/auth/users/:id", (req, res) => {
     Users.findById(req.params.id, function (err, user) {
       if (err) {
         res.status(400);
@@ -34,7 +66,8 @@ router
           error: "Bad request"
         });
       } else {
-        delete user.password;
+        user.password = undefined;
+        user.save();
         res.json(user);
         res.status(200);
       }
@@ -49,10 +82,9 @@ router
           if (err) console.log("error", err);
           else {
             if (data) {
-              res.json({isConnected: true});
+              res.json({isConnected: true, isAdmin: data.admin});
             }
             else res.json({isConnected: false})
-
           }
         })
     }

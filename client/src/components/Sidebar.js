@@ -3,7 +3,9 @@ import {NavLink} from "react-router-dom";
 
 import {Nav} from "reactstrap";
 
-const Sidebar = () => {
+import {connect} from 'react-redux';
+
+const Sidebar = ({value}) => {
   return (
     <div className="sidebar" data="blue">
       <div className="sidebar-wrapper">
@@ -24,28 +26,40 @@ const Sidebar = () => {
         <Nav>
           <li>
             <NavLink
-              to="/admin/dashboard"
+              to="/"
               className="nav-link"
               activeClassName="active"
-            >
-              <i
-                className="tim-icons icon-chart-pie-36"/><p>Dashboard</p>
+            ><p>Home</p>
             </NavLink>
           </li>
-          <li>
+          {value.authenticated === true && <li>
             <NavLink
               to="/"
               className="nav-link"
               activeClassName="active"
-            >
-              <i
-                className="tim-icons icon-chart-pie-36"/><p>Home</p>
+            ><p>Favoris</p>
             </NavLink>
           </li>
+          }
+          {value.admin === true && <li>
+            <NavLink
+              to="/"
+              className="nav-link"
+              activeClassName="active"
+            ><p>Administration</p>
+            </NavLink>
+          </li>
+          }
         </Nav>
       </div>
     </div>
   )
 };
 
-export default Sidebar;
+const mapStateToProps = state => ({
+  value: state.login
+});
+
+export default connect(
+  mapStateToProps,
+)(Sidebar);
