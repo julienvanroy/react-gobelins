@@ -12,10 +12,12 @@ const Login = ({value, actions}) => {
     axios.post('http://localhost:8081/login', value.user)
       .then(res => {
         if (res.data.isConnected) {
-          console.log(res.data.isAdmin)
           actions.setUser(value.user);
           actions.setAdmin(res.data.isAdmin);
           actions.setAuthenticated(true);
+          actions.setHasError(false, '');
+        }else {
+          actions.setHasError(true, 'Identifiant ou mot de passe incorrect');
         }
       })
   };
@@ -31,7 +33,7 @@ const Login = ({value, actions}) => {
     user.password = e.target.value;
     actions.setUser(user)
   }
-  console.log(value)
+
   if (value.user && value.authenticated) {
     return (
       <Redirect to="/"/>
@@ -58,6 +60,7 @@ const Login = ({value, actions}) => {
                          className="form-control"
                          onChange={e => setPassword(e)}/>
                 </div>
+                {value.hasError === true && <p className="text-center">{ value.errorMessage }</p>}
               </div>
               <div className="card-footer">
                 <button type="submit"
