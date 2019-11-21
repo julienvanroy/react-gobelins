@@ -90,6 +90,25 @@ router
         })
     }
   })
+  .post("/admin/users/add", (req, res) => {
+    if (!req.body.username || !req.body.password) {
+      res.json({isCreated: false, isExist: false})
+    } else {
+      Users.findOne({username: req.body.username})
+        .exec((err, data) => {
+          if (err) console.log("error", err);
+          else {
+            if (data) res.json({isCreated: false, isExist: true});
+            else {
+              const user = new Users({username: req.body.username, password: md5(req.body.password), admin: false, avatar: "", favorites: []});
+              user.save()
+                .then(() => res.json({isCreated: true, isExist: false}))
+                .catch(err => res.status(400).send("unable to save to database:", err))
+            }
+          }
+        })
+    }
+  })
   .use((req, res) => {
     res.status(400);
     res.json({

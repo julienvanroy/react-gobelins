@@ -15,9 +15,7 @@ const TableBodyUser = (props) => {
           />
       </td>
       <td className="text-center">{props.username}</td>
-      <td className="text-center"><Button color="success">
-        Edit
-      </Button>
+      <td className="text-center">
         <Button color="danger">
           Delete
         </Button></td>
