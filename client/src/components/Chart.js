@@ -13,13 +13,14 @@ export default class Chart extends React.Component {
     }
 
     componentDidMount () {
+        
         this.props.chartData.forEach(element => {
             this.state.price.push(element.price)
             this.state.date.push(element.timestamp)
         });
         this.setState({price: this.state.price})
         this.setState({date: this.state.date})
-        console.log(this.state.date)
+        console.log(this.state.price)
     }
 
       

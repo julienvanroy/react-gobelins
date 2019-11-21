@@ -21,7 +21,7 @@ const SinglePage = ({value, actions, match}) => {
 
   useEffect(() => {
     if (loadChartData === false) {
-      axios.get(`https://api.coinpaprika.com/v1/tickers/${id}/historical?start=2019-11-06&interval=7d`)
+      axios.get(`https://api.coinpaprika.com/v1/tickers/${id}/historical?start=2018-11-06&interval=7d`)
         .then(res => {
           actions.setChartData(res.data)
         }).finally(() => {
@@ -39,9 +39,11 @@ const SinglePage = ({value, actions, match}) => {
   }, [loadChartData, loadHistorique]);
 
   const handleChange = (event) => {
+    console.log(event.target.value)
     const value = (parseInt(new Date().getDate(), 10) - parseInt(event.target.value, 10))
-    const day = value < 10 ? `0${new Date().getDate()}` : new Date().getDate();
-    setDate(`${new Date().getFullYear()}-${new Date().getMonth()}-${day}`);
+    const day = value < 10 ? `0` + value : value;
+console.log(new Date().getMonth())
+    setDate(`${new Date().getFullYear() - 1}-${new Date().getMonth() + 1}-${day}`);
     setOptions(event.target.value)
     setChangeChartData(true);
   };
@@ -70,6 +72,8 @@ const SinglePage = ({value, actions, match}) => {
                 <div className="text-left col-sm-6">
                   <h5 className="card-category">Rank
                     : {value.historique.rank}</h5>
+                    <h5 className="card-category">Date
+                    : {date === null ? "2018-11-21" : date}</h5>
                   <h2 className="card-title">{value.historique.name}</h2>
                 </div>
                 <div className="col-sm-6">
@@ -82,13 +86,16 @@ const SinglePage = ({value, actions, match}) => {
               </div>
             </div>
             <div className="card-body">
-              <Chart chartData={value.chartData}/>
+            {(loadChartData === true && loadHistorique === true && changeChartData === false) && <Chart chartData={value.chartData}/>}
             </div>
           </div>
         </div>
         <CardInfo description={value.historique.description}/>
-        <div className="card_description">
-          {team}
+        <div>
+        <h3 className="col-lg-4">The team</h3>
+          <div className="card_description">
+            {team}
+          </div>
         </div>
       </div>
     )
