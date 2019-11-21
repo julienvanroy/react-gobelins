@@ -6,8 +6,6 @@ const TableHadUser = (props) => {
       <tr>
         <th className="text-center">Avatar</th>
         <th className="text-center">Username</th>
-        <th className="text-center">Nom</th>
-        <th className="text-center">Prénom</th>
         <th className="text-center">Action</th>
       </tr>
     )

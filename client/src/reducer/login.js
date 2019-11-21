@@ -1,4 +1,5 @@
 const getUser = () => {
+  console.log(sessionStorage.getItem('username'))
   if (sessionStorage.getItem('username') && sessionStorage.getItem('password')) {
     return ({
       username: sessionStorage.getItem('username'),
