@@ -2,7 +2,7 @@ const initialState = {
   favs: [],
 };
 
-const fav = (state = initialState, action) => {
+const favorites = (state = initialState, action) => {
   switch (action.type) {
     case 'SET_FAVS':
       return {...state, favs: action.favs};
@@ -11,4 +11,4 @@ const fav = (state = initialState, action) => {
   }
 };
 
-export default fav;
+export default favorites;

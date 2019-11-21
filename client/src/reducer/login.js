@@ -1,4 +1,3 @@
-console.log(localStorage)
 const getUser = () => {
   if (localStorage.getItem('username') && localStorage.getItem('password')) {
     return ({

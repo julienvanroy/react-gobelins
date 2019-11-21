@@ -58,8 +58,8 @@ router
       }
     });
   })
-  .get("/auth/users/:id", (req, res) => {
-    Users.findById(req.params.id, function (err, user) {
+  .get("/auth/users/:username", (req, res) => {
+    Users.findOne({username: req.params.username}, function (err, user) {
       if (err) {
         res.status(400);
         res.json({

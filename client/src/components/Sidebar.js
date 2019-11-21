@@ -34,7 +34,7 @@ const Sidebar = ({value}) => {
           </li>
           {value.authenticated === true && <li>
             <NavLink
-              to="/"
+              to="/favorites"
               className="nav-link"
               activeClassName="active"
             ><p>Favoris</p>

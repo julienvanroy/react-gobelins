@@ -5,7 +5,7 @@ let usersSchema = new mongoose.Schema({
     password: String,
     admin: Boolean,
     avatar: String,
-    favorites: ["btc-bitcoin","eth-ethereum"],
+    favorites: [],
 }, { versionKey: false });
 
 module.exports = mongoose.model('users', usersSchema);

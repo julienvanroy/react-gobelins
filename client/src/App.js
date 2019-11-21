@@ -8,6 +8,7 @@ import Admin from "./pages/Admin";
 import Sidebar from "./components/Sidebar";
 import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
+import Fav from "./pages/Favorites";
 import SinglePage from "./pages/SinglePage";
 import AddUser from "./pages/AddUser";
 const App = () => {
@@ -27,6 +28,7 @@ const App = () => {
                     <Switch location={location}>
                       <Route exact={true} path='/' component={Home}/>
                       <Route exact={true} path='/login' component={Login}/>
+                      <Route exact={true} path='/favorites' component={Fav}/>
                       <Route exact={true} path='/admin' component={Admin}/>
                       <Route exact={true} path='/admin/user/add' component={AddUser}/>
                       <Route exact={true} path="/:id" component={SinglePage}/>
