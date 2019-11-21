@@ -97,6 +97,8 @@
   "devDependencies": {
     "@commitlint/cli": "^8.2.0",
     "@commitlint/config-conventional": "^8.2.0",
+    "enzyme": "^3.10.0",
+    "enzyme-adapter-react-16": "^1.15.1",
     "husky": "^3.0.9",
     "redux-devtools": "^3.5.0"
   },

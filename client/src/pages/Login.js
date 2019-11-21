@@ -41,7 +41,7 @@ const Login = ({value, actions}) => {
     );
   } else {
     return (
-      <div className="row">
+      <div className="row form.connexion">
         <div className="col-md-7 center-block">
           <div className="card">
             <div className="card-header">
