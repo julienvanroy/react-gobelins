@@ -1,107 +1,109 @@
-import React from 'react';
-import Chart from '../components/Chart'
-import CardInfo from '../components/CardInfo'
-import Team from '../components/Team'
-import Button from '../components/Buttons'
+import React, {useState, useEffect} from 'react';
 import axios from 'axios';
-import { DocumentQuery } from 'mongoose';
+import {Button, Table} from 'reactstrap';
 
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
 
-export default class SinglePage extends React.Component {
-    constructor(props){
-        super(props)
-        
-        this.state = {
-            chartData: [],
-            historique: [],
-            loading: false,
-            loadingHistorique: false,
-            id: this.props.match.params.id,
-            date: `${new Date().getFullYear()}-${new Date().getMonth()}-${parseInt(new Date().getDate(), 10) - 4}`,
-            toggleHeure: '1',
-            'options': "1"
-            //chartDate: `${parseInt(new Date().getDate(), 10) - 1}${new Date().getMonth()}${new Date().getFullYear()}}`
-         }
-    }
+import * as SingleActions from '../actions/single';
+import Chart from "../components/Chart";
+import CardInfo from "../components/CardInfo";
+import Team from "../components/Team";
+import ButtonHistorique from "../components/ButtonHistorique";
 
-    handleChange = (event) => {
-        console.log(event.target.value)
-        const value =(parseInt( new Date().getDate(), 10) - parseInt(event.target.value,10))
-        const day = value < 10 ? `0${new Date().getDate()}` : new Date().getDate();
+const SinglePage = ({value, actions, match}) => {
+  const [loadChartData, setLoadChartData] = useState(false);
+  const [loadHistorique, setLoadHistorique] = useState(false);
+  const [changeChartData, setChangeChartData] = useState(false);
+  const [id, setId] = useState(match.params.id);
+  const [options, setOptions] = useState('1');
+  const [date, setDate] = useState(null);
 
-        this.setState({
-            loading: false,
-            date: `${new Date().getFullYear()}-${new Date().getMonth()}-${day}`,
-            options: event.target.value,
-        },() => {
-            console.log(this.state.date)
-            console.log(this.state.options)
-        this.changeApi() })
-    }
-    
-    async changeApi () {
-        await axios.get(`https://api.coinpaprika.com/v1/tickers/${this.state.id}/historical?start=${this.state.date}&interval=${this.state.options}d`)
-        .then(res => {           
-           this.setState({chartData: res.data})
+  useEffect(() => {
+    if (loadChartData === false) {
+      axios.get(`https://api.coinpaprika.com/v1/tickers/${id}/historical?start=2019-11-06&interval=7d`)
+        .then(res => {
+          actions.setChartData(res.data)
         }).finally(() => {
-            console.log('cc')
-            this.setState({loading: true})
-        })
+        setLoadChartData(true)
+      })
     }
-
-    async componentDidMount () {
-        await axios.get(`https://api.coinpaprika.com/v1/tickers/${this.state.id}/historical?start=2019-11-06&interval=7d`)
-        .then(res => {           
-           this.setState({chartData: res.data})
+    if (loadHistorique === false) {
+      axios.get(`https://api.coinpaprika.com/v1/coins/${id}`)
+        .then(res => {
+          actions.setHistorique(res.data)
         }).finally(() => {
-            this.setState({loading: true})
-        })
-
-        await axios.get(`https://api.coinpaprika.com/v1/coins/${this.state.id}`)
-        .then(res => {           
-           this.setState({historique: res.data})
-        }).finally(() => {
-            this.setState({loadingHistorique: true})
-        })
+        setLoadHistorique(true)
+      })
     }
+  }, [loadChartData, loadHistorique]);
 
-    render() {
-       
-        if( this.state.loading === true && this.state.loadingHistorique === true ){
-            const team = this.state.historique.team.map((team, index) =>  <Team  key={index} {...team}  />)
-           // console.log(this.state.chartData)
-            return(
-            <div>
-                <div className="row">
-                    <div className="col-12">
-                        <div className="card-chart card">
-                            <div className="card-header">
-                                <div className="row">
-                                    <div className="text-left col-sm-6">
-                                        <h5 className="card-category">Rank : {this.state.historique.rank}</h5>
-                                        <h2 className="card-title">{this.state.historique.name}</h2>
-                                    </div>
-                                    <div className="col-sm-6">
-                                        <div data-toggle="buttons" role="group" className="btn-group-toggle float-right btn-group">
-                                            <Button options={this.state.options} handleChange={this.handleChange}/>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        <div className="card-body">
-                            <Chart chartData={this.state.chartData} />
-                        </div>
-                    </div>
+  const handleChange = (event) => {
+    const value = (parseInt(new Date().getDate(), 10) - parseInt(event.target.value, 10))
+    const day = value < 10 ? `0${new Date().getDate()}` : new Date().getDate();
+    setDate(`${new Date().getFullYear()}-${new Date().getMonth()}-${day}`);
+    setOptions(event.target.value)
+    setChangeChartData(true);
+  };
+
+  useEffect( () => {
+    if(changeChartData === true) {
+      axios.get(`https://api.coinpaprika.com/v1/tickers/${id}/historical?start=${date}&interval=${options}d`)
+        .then(res => {
+          actions.setChartData(res.data);
+        }).finally(() => {
+        setChangeChartData(false);
+      })
+    }
+  },[changeChartData,date, options])
+
+
+  if (loadChartData === true && loadHistorique === true) {
+    const team = value.historique.team.map((team, index) => <Team
+      key={index} {...team}  />)
+    return (
+      <div className="row">
+        <div className="col-12">
+          <div className="card-chart card">
+            <div className="card-header">
+              <div className="row">
+                <div className="text-left col-sm-6">
+                  <h5 className="card-category">Rank
+                    : {value.historique.rank}</h5>
+                  <h2 className="card-title">{value.historique.name}</h2>
                 </div>
+                <div className="col-sm-6">
+                  <div data-toggle="buttons" role="group"
+                       className="btn-group-toggle float-right btn-group">
+                    <ButtonHistorique options={options}
+                            handleChange={handleChange}/>
+                  </div>
+                </div>
+              </div>
             </div>
-                <CardInfo  description={this.state.historique.description} />
-                <div className="card_description">
-                    {team}
-                </div>
-        </div>    
-       
-            )
-        }else return null
-    }
+            <div className="card-body">
+              <Chart chartData={value.chartData}/>
+            </div>
+          </div>
+        </div>
+        <CardInfo description={value.historique.description}/>
+        <div className="card_description">
+          {team}
+        </div>
+      </div>
+    )
+  } else return null
 }
 
+const mapStateToProps = state => ({
+  value: state.single,
+});
+
+const mapDispatchToProps = dispatch => ({
+  actions: bindActionCreators(SingleActions, dispatch),
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(SinglePage);
