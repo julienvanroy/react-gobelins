@@ -1,7 +1,7 @@
 import React from 'react';
 
 
-export default class Button extends React.Component {
+export default class ButtonHistorique extends React.Component {
     constructor(props){
         super(props)
     }
@@ -30,4 +30,3 @@ export default class Button extends React.Component {
         );
       }
     }
-    

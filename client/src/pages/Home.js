@@ -17,11 +17,11 @@ const Home = ({value, actions}) => {
         setLoad(true);
         axios.get('https://api.coinpaprika.com/v1/coins')
         .then(res => {
-            actions.setCoins(res.data.filter(coin => coin.is_active === true))
+            actions.setCoins(res.data.filter(coin => (coin.is_active === true) && (coin.rank !== 0)))
         })
       }
     }, [load]);
-  
+
     return (
         <Table responsive>
     <thead>
@@ -37,11 +37,11 @@ const Home = ({value, actions}) => {
 const mapStateToProps = state => ({
     value: state.home,
   });
-  
+
   const mapDispatchToProps = dispatch => ({
     actions: bindActionCreators(HomeActions, dispatch),
   });
-  
+
   export default connect(
     mapStateToProps,
     mapDispatchToProps,
