@@ -1,24 +1,25 @@
 import React from 'react';
-import {Link} from "react-router-dom";
 import {Button} from "reactstrap";
 import ReactImageFallback from "react-image-fallback";
 
-const TableBodyUser = (props) => {
+const TableBodyUser = ({username, avatar, connected, removeUser}) => {
   return (
     <tr>
       <td className="text-center">
         <ReactImageFallback
-          src={props.avatar}
+          src={avatar}
           fallbackImage="assets/img/default-avatar.jpg"
           width="60"
           height="60"
-          />
+        />
       </td>
-      <td className="text-center">{props.username}</td>
+      <td className="text-center">{username}</td>
       <td className="text-center">
-        <Button color="danger">
+        {connected !== username &&
+        <Button color="danger" onClick={() => removeUser()}>
           Delete
-        </Button></td>
+        </Button>}
+      </td>
     </tr>
   )
 };

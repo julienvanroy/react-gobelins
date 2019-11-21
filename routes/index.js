@@ -109,6 +109,22 @@ router
         })
     }
   })
+  .delete("/admin/users/delete/:username", (req, res) => {
+    Users.findOne({username: req.params.username}, function (err, data) {
+      if (err) return res.status(400).send(err);
+      else {
+        if (data) {
+          if (req.params.username !== req.headers.username){
+            Users.deleteOne({username: req.params.username}, function (err) {
+              if (err) res.status(400);
+            });
+            res.status(200);
+            res.send("ok supprimé");
+          }else return res.status(404).send({error: "You can't delete you"});
+        } else return res.status(404).send({error: "Not Found"});
+      }
+    });
+  })
   .use((req, res) => {
     res.status(400);
     res.json({
