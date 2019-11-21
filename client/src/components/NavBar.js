@@ -81,12 +81,6 @@ const NavBar = ({value, actions}) => {
                     <p className="d-lg-none">Nom Utilisateur</p>
                   </DropdownToggle>
                   <DropdownMenu className="dropdown-navbar" right tag="ul">
-                    <NavLink tag="li">
-                      <DropdownItem className="nav-item">Profile</DropdownItem>
-                    </NavLink>
-                    <NavLink tag="li">
-                      <DropdownItem className="nav-item">Settings</DropdownItem>
-                    </NavLink>
                     <DropdownItem divider tag="li"/>
                     <NavLink tag="li">
                       <DropdownItem className="nav-item"

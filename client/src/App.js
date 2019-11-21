@@ -9,6 +9,7 @@ import Sidebar from "./components/Sidebar";
 import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
 import SinglePage from "./pages/SinglePage";
+import AddUser from "./pages/AddUser";
 const App = () => {
   return (
       <BrowserRouter>
@@ -27,6 +28,7 @@ const App = () => {
                       <Route exact={true} path='/' component={Home}/>
                       <Route exact={true} path='/login' component={Login}/>
                       <Route exact={true} path='/admin' component={Admin}/>
+                      <Route exact={true} path='/admin/user/add' component={AddUser}/>
                       <Route exact={true} path="/:id" component={SinglePage}/>
                       <Route path="*" component={Error}/>
                     </Switch>

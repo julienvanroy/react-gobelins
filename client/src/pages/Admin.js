@@ -23,6 +23,13 @@ const Admin = ({login, admin, actions}) => {
     }
   }, [load]);
 
+  const removeUser = (username) => {
+    axios.delete(`http://localhost:8081/admin/users/delete/${username}`, {headers: login.user})
+      .then(res => {
+        setLoad(false)
+      })
+  };
+
   if (login.authenticated === false || login.admin === false) {
     return (
       <Error title="401" message="Oh Oh Oh, calma... tu n'as pas accès à cette page"/>
@@ -39,7 +46,7 @@ const Admin = ({login, admin, actions}) => {
             <TableHeadUser />
             </thead>
             <tbody>
-            { admin.users.length > 0 && admin.users.map((user,index) => <TableBodyUser key="index" {...user} />)}
+            { admin.users.length > 0 && admin.users.map((user,index) => <TableBodyUser key={index} {...user} removeUser={() => removeUser(user.username)} connected={login.user.username} />)}
             </tbody>
           </Table>
         </div>

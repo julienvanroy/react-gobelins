@@ -1,10 +1,10 @@
 let mongoose = require('mongoose');
 
 let usersSchema = new mongoose.Schema({
-    avatar: String,
     username: String,
     password: String,
     admin: Boolean,
+    avatar: String,
     favorites: ["btc-bitcoin","eth-ethereum"],
 }, { versionKey: false });
 
