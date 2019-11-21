@@ -3,6 +3,7 @@ const getUser = () => {
     return ({
       username: sessionStorage.getItem('username'),
       password: sessionStorage.getItem('password'),
+      admin: sessionStorage.getItem('admin') !== null ? (sessionStorage.getItem('admin' ) === "true") : false,
     })
   }
   return null;
@@ -11,7 +12,7 @@ const getUser = () => {
 const initialState = {
   user: getUser(),
   authenticated: getUser() !== null,
-  admin: sessionStorage.getItem('admin') !== null ? sessionStorage.getItem('admin') : false,
+  admin: sessionStorage.getItem('admin') !== null ? (sessionStorage.getItem('admin' ) === "true") : false,
   hasError: false,
   errorMessage: ''
 };
@@ -40,7 +41,7 @@ const login = (state = initialState, action) => {
       return {...state, authenticated: action.authenticated};
     case 'SET_ADMIN':
       sessionStorage.setItem('admin', action.admin);
-      return {...state, admin: action.admin};
+      return {...state, user: getUser(), admin: action.admin};
     case 'SET_HAS_ERROR':
       return {...state, hasError: action.hasError, errorMessage: action.errorMessage};
     default:

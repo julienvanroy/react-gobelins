@@ -1,42 +1,45 @@
-import React from 'react';
-import {Redirect, Link} from 'react-router-dom';
+import React,{useState, useEffect} from 'react';
+import {Link} from 'react-router-dom';
 import axios from 'axios'
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 
-import * as LoginActions from '../actions/login';
-import {Table, Button} from "reactstrap";
+import * as AdminActions from '../actions/admin';
+import {Table} from "reactstrap";
 
-const Admin = ({value, actions}) => {
-  console.log(value)
-  if (value.user === null || value.authenticated !== true || value.admin !== true) {
+import Error from "./Error";
+import TableBodyUser from "../components/Admin/TableBodyUser";
+import TableHeadUser from "../components/Admin/TableHeadUser";
+
+const Admin = ({login, admin, actions}) => {
+  const [load, setLoad] = useState(false)
+   useEffect( () => {
+    if(load === false) {
+      setLoad(true);
+      axios.get('http://localhost:8081/admin/users',{headers: login.user})
+        .then(res => {
+          actions.setUsers(res.data)
+        })
+    }
+  }, [load]);
+
+  if (login.authenticated === false || login.admin === false) {
     return (
-      <Redirect to="/"/>
+      <Error title="401" message="Oh Oh Oh, calma... tu n'as pas accès à cette page"/>
     );
   } else {
     return (
       <div className="card">
         <div className="card-header">
-          <Button color="success"><Link to="/creer">Créer un user</Link></Button>
+          <Link to="/admin/user/add" className="btn btn-success">Créer un user</Link>
         </div>
         <div className="card-body">
           <Table responsive>
             <thead>
-            <tr>
-              <th className="text-center">Avatar</th>
-              <th className="text-center">Username</th>
-              <th className="text-center">Nom</th>
-              <th className="text-center">Prénom</th>
-              <th className="text-center">Action</th>
-            </tr>
+            <TableHeadUser />
             </thead>
             <tbody>
-            <Button color="success">
-              Edit
-            </Button>
-            <Button color="danger">
-              Delete
-            </Button>
+            { admin.users.length > 0 && admin.users.map((user,index) => <TableBodyUser key="index" {...user} />)}
             </tbody>
           </Table>
         </div>
@@ -46,11 +49,12 @@ const Admin = ({value, actions}) => {
 }
 
 const mapStateToProps = state => ({
-  value: state.login
+  login: state.login,
+  admin: state.admin
 });
 
 const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators(LoginActions, dispatch),
+  actions: bindActionCreators(AdminActions, dispatch),
 });
 
 export default connect(

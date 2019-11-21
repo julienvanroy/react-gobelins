@@ -1,5 +1,5 @@
 import React from 'react';
-import {Redirect, Link} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import {useState, useEffect} from 'react'
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
@@ -15,7 +15,6 @@ import {
 const NavBar = ({value, actions}) => {
   const [open, setOpen] = useState(false);
   const [toggle, setToggle] = useState(false);
-  const [redirection, setRedirection] = useState(false);
 
   useEffect(
     () => {
@@ -50,54 +49,55 @@ const NavBar = ({value, actions}) => {
               </button>
             </div>
           </div>
-          <button
-            aria-expanded={false}
-            aria-label="Toggle navigation"
-            className="navbar-toggler"
-            data-target="#navigation"
-            data-toggle="collapse"
-            id="navigation"
-            type="button"
-            onClick={() => setToggle(!toggle)}
-          >
-            <span className="navbar-toggler-bar navbar-kebab"/>
-            <span className="navbar-toggler-bar navbar-kebab"/>
-            <span className="navbar-toggler-bar navbar-kebab"/>
-          </button>
-          {value.authenticated === true ? <Collapse navbar isOpen={toggle}>
-            <Nav className="ml-auto" navbar>
-              <UncontrolledDropdown nav>
-                <DropdownToggle
-                  caret
-                  color="default"
-                  data-toggle="dropdown"
-                  nav
-                  onClick={e => e.preventDefault()}
-                >
-                  <div className="photo">
-                    <img alt="..." src={require("../assets/img/anime3.png")}/>
-                  </div>
-                  <b className="caret d-none d-lg-block d-xl-block"/>
-                  <p className="d-lg-none">Nom Utilisateur</p>
-                </DropdownToggle>
-                <DropdownMenu className="dropdown-navbar" right tag="ul">
-                  <NavLink tag="li">
-                    <DropdownItem className="nav-item">Profile</DropdownItem>
-                  </NavLink>
-                  <NavLink tag="li">
-                    <DropdownItem className="nav-item">Settings</DropdownItem>
-                  </NavLink>
-                  <DropdownItem divider tag="li"/>
-                  <NavLink tag="li">
-                    <DropdownItem className="nav-item"
-                                  onClick={() => actions()}>Log
-                      out</DropdownItem>
-                  </NavLink>
-                </DropdownMenu>
-              </UncontrolledDropdown>
-              <li className="separator d-lg-none"/>
-            </Nav>
-          </Collapse> : <div><Link to="/login">Login</Link></div>}
+          {value.authenticated === true ? <>
+            <button
+              aria-expanded={false}
+              aria-label="Toggle navigation"
+              className="navbar-toggler"
+              data-target="#navigation"
+              data-toggle="collapse"
+              id="navigation"
+              type="button"
+              onClick={() => setToggle(!toggle)}
+            >
+              <span className="navbar-toggler-bar navbar-kebab"/>
+              <span className="navbar-toggler-bar navbar-kebab"/>
+              <span className="navbar-toggler-bar navbar-kebab"/>
+            </button>
+            <Collapse navbar isOpen={toggle}>
+              <Nav className="ml-auto" navbar>
+                <UncontrolledDropdown nav>
+                  <DropdownToggle
+                    caret
+                    color="default"
+                    data-toggle="dropdown"
+                    nav
+                    onClick={e => e.preventDefault()}
+                  >
+                    <div className="photo">
+                      <img alt="..." src={require("../assets/img/anime3.png")}/>
+                    </div>
+                    <b className="caret d-none d-lg-block d-xl-block"/>
+                    <p className="d-lg-none">Nom Utilisateur</p>
+                  </DropdownToggle>
+                  <DropdownMenu className="dropdown-navbar" right tag="ul">
+                    <NavLink tag="li">
+                      <DropdownItem className="nav-item">Profile</DropdownItem>
+                    </NavLink>
+                    <NavLink tag="li">
+                      <DropdownItem className="nav-item">Settings</DropdownItem>
+                    </NavLink>
+                    <DropdownItem divider tag="li"/>
+                    <NavLink tag="li">
+                      <DropdownItem className="nav-item"
+                                    onClick={() => actions()}>Log
+                        out</DropdownItem>
+                    </NavLink>
+                  </DropdownMenu>
+                </UncontrolledDropdown>
+                <li className="separator d-lg-none"/>
+              </Nav>
+            </Collapse></> : <div><Link to="/login">Login</Link></div>}
         </div>
       </Navbar>
     </>
