@@ -68,6 +68,7 @@ const NavBar = ({value, actions}) => {
               <Nav className="ml-auto" navbar>
                 <UncontrolledDropdown nav>
                   <DropdownToggle
+                    className="flex nav"
                     caret
                     color="default"
                     data-toggle="dropdown"
@@ -78,7 +79,7 @@ const NavBar = ({value, actions}) => {
                       <img alt="..." src={require("../assets/img/anime3.png")}/>
                     </div>
                     <b className="caret d-none d-lg-block d-xl-block"/>
-                    <p className="d-lg-none">Nom Utilisateur</p>
+                    <p>{value.user.username}</p>
                   </DropdownToggle>
                   <DropdownMenu className="dropdown-navbar" right tag="ul">
                     <DropdownItem divider tag="li"/>
