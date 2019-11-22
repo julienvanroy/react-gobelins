@@ -7,7 +7,7 @@ import axios from "axios";
 
 const Heart = ({id, login, action}) => {
   const [load,setLoad] = useState(false);
-
+/*
   useEffect(() => {
     if (login.authenticated === true && load === false) {
       axios.get(`http://localhost:8081/auth/users/${login.user.username}`, {headers: login.user})
@@ -23,14 +23,10 @@ const Heart = ({id, login, action}) => {
         return true
       }else return false
     }else return false
-  }
+  }*/
   return (
     <td className="text-right">
-      {
-        (isFav()) && <button className="btn btn-icon"><i className="fas fa-heart"/>
-        </button>
-      }
-
+        <button className="btn btn-icon"><i className="fas fa-heart"/></button>
     </td>
   )
 };
