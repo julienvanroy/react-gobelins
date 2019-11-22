@@ -4,7 +4,8 @@ let usersSchema = new mongoose.Schema({
     username: String,
     password: String,
     admin: Boolean,
-    favorites: [{}],
+    avatar: String,
+    favorites: [],
 }, { versionKey: false });
 
 module.exports = mongoose.model('users', usersSchema);

@@ -25,7 +25,14 @@ html body{
 
   .flex{
     display: flex;
-
+    &.nav{
+      *{
+        margin: 0 10px;
+        &:first-child{
+          margin-left: 0;
+        }
+      }
+    }
     &.wrap{
       flex-wrap: wrap;
     }
@@ -34,5 +41,9 @@ html body{
   .center-block{
     display: block;
     margin: auto;
+  }
+  img{
+    object-fit: cover;
+    object-position: center;
   }
 }

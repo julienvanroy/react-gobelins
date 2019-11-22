@@ -34,16 +34,16 @@ const Sidebar = ({value}) => {
           </li>
           {value.authenticated === true && <li>
             <NavLink
-              to="/"
+              to="/favorites"
               className="nav-link"
               activeClassName="active"
             ><p>Favoris</p>
             </NavLink>
           </li>
           }
-          {value.admin === true && <li>
+          {(value.authenticated === true && value.admin === true) && <li>
             <NavLink
-              to="/"
+              to="/admin"
               className="nav-link"
               activeClassName="active"
             ><p>Administration</p>

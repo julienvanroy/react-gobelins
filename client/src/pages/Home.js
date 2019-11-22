@@ -1,45 +1,49 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import axios from 'axios';
-import {Button,Table} from 'reactstrap';
-import TableBody from '../components/TableBody'
+import {Table} from 'reactstrap';
+import TableBodyHome from '../components/Home/TableBodyHome'
+import TableHeadHome from '../components/Home/TableHeadHome'
 
-export default class Home extends React.Component {
-    constructor (props) {
-        super(props);
-        this.state = {
-            coins : []
-         }
-    }
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
 
-    async componentDidMount () {
-        await axios.get('https://api.coinpaprika.com/v1/coins')
+import * as HomeActions from '../actions/home';
+
+const Home = ({value, actions}) => {
+  const [load, setLoad] = useState(false);
+
+  useEffect(() => {
+    if (load === false) {
+      setLoad(true);
+      axios.get('https://api.coinpaprika.com/v1/coins')
         .then(res => {
-            const coins = res.data;
-            this.setState({coins})
-            console.log();
-        }).finally( () => {
-            this.setState({coins: this.state.coins.filter(coin => coin.is_active === true)})
+          actions.setCoins(res.data.filter(coin => (coin.is_active === true) && (coin.rank !== 0)))
         })
     }
+  }, [load]);
 
+  return (
+    <Table responsive>
+      <thead>
+      <TableHeadHome/>
+      </thead>
+      <tbody>
+      {value.coins.length > 0 && value.coins.map((coin, index) => <TableBodyHome
+        key={index} {...coin} />)}
+      </tbody>
+    </Table>
+  );
+};
 
-    render() {
-        const tableau = this.state.coins.map((coins, index) => <TableBody key={index} {...coins} /> )
-        return (
+const mapStateToProps = state => ({
+  value: state.home,
+});
 
-<Table responsive>
-    <thead>
-        <tr>
-            <th className="text-left">Rank</th>
-            <th className="text-center">Name</th>
-            <th className="text-center">Symbol</th>
-            <th className="text-right">Type</th>
-        </tr>
-    </thead>
-    <tbody>
-        {tableau}
-    </tbody>
-</Table>
-        );
-    };
-}
+const mapDispatchToProps = dispatch => ({
+  actions: bindActionCreators(HomeActions, dispatch),
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Home);
