@@ -43,7 +43,7 @@ const Login = ({value, actions}) => {
     return (
       <div className="row">
         <div className="col-md-7 center-block">
-          <div className="card">
+          <div className="card connexion">
             <div className="card-header">
               <h1 className="title">Connexion</h1>
             </div>
