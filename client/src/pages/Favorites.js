@@ -9,13 +9,14 @@ import {bindActionCreators} from 'redux';
 
 import * as HomeActions from '../actions/home';
 import * as FavoritesActions from '../actions/favorites';
+import Error from "./Error";
 
 const Favorites = ({home, login, favorites, actionsHome, actionsFavorites}) => {
   const [loadCoins, setLoadCoins] = useState(false)
   const [loadFavs, setLoadFavs] = useState(false)
 
   useEffect(() => {
-    if (loadCoins === false) {
+    if (login.authenticated === true && loadCoins === false) {
       if (home.coins.length <= 0) {
         axios.get('https://api.coinpaprika.com/v1/coins')
           .then(res => {
@@ -28,31 +29,33 @@ const Favorites = ({home, login, favorites, actionsHome, actionsFavorites}) => {
   }, [loadCoins]);
 
   useEffect(() => {
-    if (loadFavs === false && loadCoins===true) {
-      if (favorites.favs.length <= 0) {
-        axios.get(`http://localhost:8081/auth/users/${login.user.username}`, {headers: login.user})
-          .then(res => {
-            actionsFavorites.setFavs(res.data)
-          }).finally(() => setLoadFavs(true))
-      } else {
-        setLoadFavs(true);
-      }
+    if (login.authenticated === true && loadCoins === true && loadFavs === false) {
+      axios.get(`http://localhost:8081/auth/users/${login.user.username}`, {headers: login.user})
+        .then(res => {
+          let favorites = res.data.favorites
+          actionsFavorites.setFavs(home.coins.filter((coin) => favorites.indexOf(coin.id) !== -1))
+        }).finally(() => setLoadFavs(true))
     }
   }, [loadCoins, loadFavs]);
 
-  console.log(favorites)
-
-  return (
-    <Table responsive>
-      <thead>
-      <TableHeadHome/>
-      </thead>
-      <tbody>
-      {favorites.favs.length > 0 && favorites.favs.map((coin, index) => <TableBodyHome
-        key={index} {...coin} />)}
-      </tbody>
-    </Table>
-  );
+  if (login.authenticated === false) {
+    return (
+      <Error title="401"
+             message="Oh Oh Oh, calma... tu n'as pas accès à cette page"/>
+    );
+  } else {
+    return (
+      <Table responsive>
+        <thead>
+        <TableHeadHome/>
+        </thead>
+        <tbody>
+        {loadFavs === true && favorites.favs.map((coin, index) => <TableBodyHome
+          key={index} {...coin} />)}
+        </tbody>
+      </Table>
+    );
+  }
 }
 
 const mapStateToProps = state => ({

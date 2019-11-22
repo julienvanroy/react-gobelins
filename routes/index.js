@@ -67,7 +67,6 @@ router
         });
       } else {
         user.password = undefined;
-        user.save();
         res.json(user);
         res.status(200);
       }

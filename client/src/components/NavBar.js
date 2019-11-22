@@ -11,21 +11,11 @@ import {
   NavLink,
   UncontrolledDropdown
 } from "reactstrap";
+import ReactImageFallback from "react-image-fallback";
 
 const NavBar = ({value, actions}) => {
   const [open, setOpen] = useState(false);
   const [toggle, setToggle] = useState(false);
-
-  useEffect(
-    () => {
-      if (open === true) {
-        document.getElementsByTagName('html')[0].classList.add("nav-open");
-      } else {
-        document.getElementsByTagName('html')[0].classList.remove("nav-open");
-      }
-    },
-    [open],
-  );
 
   return (
     <>
@@ -76,7 +66,12 @@ const NavBar = ({value, actions}) => {
                     onClick={e => e.preventDefault()}
                   >
                     <div className="photo">
-                      <img alt="..." src={require("../assets/img/anime3.png")}/>
+                      <ReactImageFallback
+                        src={value.user.avatar}
+                        fallbackImage="assets/img/default-avatar.jpg"
+                        width="10"
+                        height="30"
+                      />
                     </div>
                     <b className="caret d-none d-lg-block d-xl-block"/>
                     <p>{value.user.username}</p>
@@ -98,7 +93,6 @@ const NavBar = ({value, actions}) => {
     </>
   );
 };
-
 
 const mapStateToProps = state => ({
   value: state.login

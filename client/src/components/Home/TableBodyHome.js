@@ -1,5 +1,6 @@
 import React from 'react';
 import {Link} from "react-router-dom";
+import Heart from "./Heart";
 
 const TableBodyHome = (props) => {
   return (
@@ -8,10 +9,7 @@ const TableBodyHome = (props) => {
       <td className="text-center">{props.name}</td>
       <td className="text-center">{props.symbol}</td>
       <td className="text-center">{props.type}</td>
-      <td className="text-right">
-        <button className="btn btn-icon"><i className="fas fa-heart"></i>
-        </button>
-      </td>
+        <Heart/>
       <td className="text-right"><Link
         className="btn btn-primary animation-on-hover" to={props.id}>Accéder à
         la page</Link></td>
